@@ -71,12 +71,12 @@ for arg in settings.country_acr:
         if metric_property[0] == 'widget':
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
                                              settings.timespan[1], settings.timespan_options, settings.template_type,
-                                             settings.app_id)
+                                             settings.app_id, settings.token)
             print(instance.widget_call_api())
         elif metric_property[0] == 'applications':
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, arg,
                                              settings.timespan[0], settings.timespan_options, settings.template_type,
-                                             settings.app_id)
+                                             settings.app_id, settings.token)
             print(instance.application_call_api())
 
         send_data(instance.widget_call_api(), arg, metrics_prefix, metric_property[1], metric_name)
