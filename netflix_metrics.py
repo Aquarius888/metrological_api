@@ -67,21 +67,46 @@ class Metro(object):
             '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'.\
                 format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
                        self.template_type, self.app_id)
-        # response = requests.get(complete_url, headers={'X-Api-Token': self.token})
-        # return response.json()
-        return complete_url
-
-    def application_call_api(self):
-        complete_url = \
-            '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'.\
-                format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
-                       self.template_type, self.app_id)
         response = requests.get(complete_url, headers={'X-Api-Token': self.token})
-        return response.raise_for_status()
+        return response.json()
 
-    def send_data(self):
+
+    # def application_call_api(self):
+    #     complete_url = \
+    #         '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'.\
+    #             format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
+    #                    self.template_type, self.app_id)
+    #     response = requests.get(complete_url, headers={'X-Api-Token': self.token})
+    #     return response.raise_for_status()
+
+    def send_data(self, data, country_acr, message_postfix):
+        # if 'widget':
+            # categories = data["data"][country_acr]["categories"]
+            # data_type = data["data"][country_acr]["data"]
+
+            # for i in range(0, len(categories)):
+            #     tmp = categories[i] / 1000 + TIME_SHIFT
+            #     message = METRICS_PREFIX + message_postfix
+            #     print(message1, dataa[i], datetime.datetime.fromtimestamp(tmp).isoformat())
+            #     graphitesend.send(
+            #         metric=message1,
+            #         value=data_type[i],
+            #         timestamp=tmp,
+            #     )
+        # else:
+            # avg = data["avg"]
+
+            # message = METRICS_PREFIX + message_postfix
+            # print(message4, avg, datetime.datetime.fromtimestamp(current_timestamp).isoformat())
+            # graphitesend.send(
+            #     metric=message,
+            #     value=avg,
+            #     timestamp=current_timestamp,
+            #     )
         pass
+
+
 
 country_id = '1'
 instance = Metro(url_api, api_type[0], metric[0], country_id, timespan, timespan_options, template_type, app_id)
-print(instance.application_call_api())
+print(instance.widget_call_api())
