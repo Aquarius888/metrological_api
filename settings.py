@@ -4,6 +4,9 @@ url_api = 'https://api.metrological.com/api/clientCountry'
 # Current token (was taken form dashboard https://sso.metrological.com/#/login)
 token = '0c17b77af4c2a23165901a5110b1cd6989f7169a6155565bd9ecad53b8df06a7'
 
+authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTY4LCJ1c2VybmFtZSI6IkNOTUMtQUR2YW5jZWRTdXBwb3J0RFRWJ' \
+                'klTIiwiZXhwaXJlcyI6IjIwMTktMDEtMjVUMDY6MDk6MzYuNDE3WiJ9.DDuCTcKgYzHN0kSa-NkVJ6IHacCObzZU1HUMsNaxXTI'
+
 # Dictionary of metrics and its properties
 metric = {'most_apps_openend_on_channel': ['widget', 'AppsOpenedOnChannel'],
           'engagement_rate': ['widget', 'EngagementRateLastWeek'],
@@ -32,7 +35,7 @@ metric = {'most_apps_openend_on_channel': ['widget', 'AppsOpenedOnChannel'],
           'app_amount_opened': ['widget', 'TotalAppStarts', 'list apps id is required'],
           'app_video_duration': ['widget', 'AppVideoDuration', 'list apps id is required']}
 
-additional_metrics = {'allowedApps': ['widget', 'GetAllowedApps'],
+additional_metrics = {'allowedApps': ['widgets', 'GetAllowedApps'],
                       'chanelHash': ['socket', 'RealTimeAppsClosed'],  # realtime, How to use it with our schedule?
                       'performance': ['applications', 'Avg_Load_Time']}  # is it necessary?
 
