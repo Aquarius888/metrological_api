@@ -28,7 +28,7 @@ class Metro(object):
         self.template_type = template_type
 
     def widget_call_api(self):
-        """Make a request to the Metrological API, widget metric.
+        """Make a request, widget metric.
 
         :return: response in json
         """
@@ -40,7 +40,7 @@ class Metro(object):
         return response.json()
 
     def application_call_api(self):
-        """Make a request to the Metrological API, application section.
+        """Make a request, application section.
 
         :return: response in json
         """
@@ -50,6 +50,14 @@ class Metro(object):
         response = requests.get(complete_url, headers={'X-Api-Token': self.token})
         return response.json()
 
+    def get_allowed_apps_id(self):
+        """Make a request, extract a list ID of allowed applications
+
+        :return: response in json
+        """
+        complete_url = '{0}/{1}/{2}'.format(self.url_api, self.api_type, self.metric)
+        response = requests.get(complete_url, headers={'X-Api-Token': self.token})
+        return response.json()
 
 
 

@@ -5,18 +5,43 @@ url_api = 'https://api.metrological.com/api/clientCountry'
 token = '0c17b77af4c2a23165901a5110b1cd6989f7169a6155565bd9ecad53b8df06a7'
 
 # Dictionary of metrics and its properties
-metric = {'app_time_spend': ['widget', 'AvgTimeSpend'],
-          'app_unique_user': ['widget', 'UniqUser7Days'],
-          'app_amount_opened': ['widget', 'OpenedLast7Days'],
-          'performance': ['applications', 'Avg_Load_Time']}
+metric = {'most_apps_openend_on_channel': ['widget', 'AppsOpenedOnChannel'],
+          'engagement_rate': ['widget', 'EngagementRateLastWeek'],
+          'videos_started': ['widget', 'VideoStarted'],
+          'video_duration': ['widget', 'VideoDuration'],
+          'top_app_video_playback': ['widget', 'TopAppsVideoPlayback'],
+          'household_engagement': ['widget', 'HouseholdEngagement'],
+          'top_app_video_duration': ['widget', 'TopAppVideoDuration'],
+          'total_households': ['widget', 'TotalHouseholds'],
+          'unique_households': ['widget', 'UniqueHouseholds'],
+          'average_app_usage': ['widget', 'AverageAppLaunches'],
+          'top_app_view': ['widget', 'MostPagesViewedInApp'],
+          'app_launches_per_customer': ['widget', 'AppLaunchPerCustomerLastMonth'],
+          'visits_per_customer': ['widget', 'VisitsPerCustomer'],
+          'app_store_visits_per_customer': ['widget', 'AppStoreVisitPerCustomer'],
+          'most_favorited_app': ['widget', 'MostFavoritedApps'],
+          'avg_session_length': ['widget', 'AverageSessionLength'],
+          'app_unique_user': ['widget', 'UniqueUser7Days'],
+          'apps_opened_per_category': ['widget', 'OpenedPerCategoryLast30Days'],
+          'apps_opened': ['widget', 'OpenedYesterday'],
+          'active_households': ['widget', 'ActiveHouseholdsYesterday'],
+          'data_engagement_waterfall': ['widget', 'WaterfallLast7Days'],
+          'top_apps': ['widget', 'TopApps'],
+          # following metrics require list of application's ids
+          'app_time_spend': ['widget', 'AvgTimeInApp', 'list apps id is required'],
+          'app_amount_opened': ['widget', 'TotalAppStarts', 'list apps id is required'],
+          'app_video_duration': ['widget', 'AppVideoDuration', 'list apps id is required']}
+
+additional_metrics = {'allowedApps': ['widget', 'GetAllowedApps'],
+                      'chanelHash': ['socket', 'RealTimeAppsClosed'],  # realtime, How to use it with our schedule?
+                      'performance': ['applications', 'Avg_Load_Time']}  # is it necessary?
 
 # Id of application, in future it may be come list of ids
 app_id = 'com.metrological.app.NetflixHorizon'
 
-
-timespan = ['today', 'last7days']
+timespan = ['today', 'last7days', 'last24hours', 'lastweek', 'lastmonth', 'yesterday', 'last30days']
 timespan_options = '%7B%7D' #{}
-template_type = 'line'
+template_type = 'line' # may be 'pie'
 
 # dict of country acronyms and its IDs
 country_acr = {'nl': 1, 'de': 2, 'ch': 3, 'ie': 4, 'pl':5, 'hu': 6, 'cz': 13}
