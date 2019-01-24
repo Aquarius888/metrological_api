@@ -79,4 +79,4 @@ for arg in settings.country_acr:
                                              settings.app_id, settings.token)
             print(instance.application_call_api())
 
-        send_data(instance.widget_call_api(), arg, metrics_prefix, metric_property[1], metric_name)
+        send_data(instance.widget_call_api(), arg, metrics_prefix, metric_property[1], metric_property[0])
