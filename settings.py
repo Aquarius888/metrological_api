@@ -18,8 +18,8 @@ timespan = ['today', 'last7days']
 timespan_options = '%7B%7D' #{}
 template_type = 'line'
 
-# list of country acronims
-country_acr = ['nl', 'de', 'ch', 'ie']
+# dict of country acronyms and its IDs
+country_acr = {'nl': 1, 'de': 2, 'ch': 3, 'ie': 4}
 
 # settings for carbon server connectivity
 # CARBON_SERVER = '172.27.66.160'

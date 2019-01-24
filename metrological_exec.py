@@ -55,17 +55,8 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
     pass
 
 
-for arg in settings.country_acr:
-    metrics_prefix = 'netflix.country.' + arg + '.metrological.'
-
-    if arg == "nl":
-        country_id = 1
-    elif arg == "de":
-        country_id = 2
-    elif arg == "ch":
-        country_id = 3
-    elif arg == "ie":
-        country_id = 4
+for acr, country_id in settings.country_acr.items():
+    metrics_prefix = 'netflix.country.' + acr + '.metrological.'
 
     for metric_name, metric_property in settings.metric.items():
         if metric_property[0] == 'widget':
@@ -73,10 +64,11 @@ for arg in settings.country_acr:
                                              settings.timespan[1], settings.timespan_options, settings.template_type,
                                              settings.app_id, settings.token)
             print(instance.widget_call_api())
+            # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
         elif metric_property[0] == 'applications':
-            instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, arg,
+            instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, acr,
                                              settings.timespan[0], settings.timespan_options, settings.template_type,
                                              settings.app_id, settings.token)
             print(instance.application_call_api())
+            # send_data(instance.application_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
 
-        send_data(instance.widget_call_api(), arg, metrics_prefix, metric_property[1], metric_property[0])
