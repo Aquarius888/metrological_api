@@ -19,7 +19,7 @@ timespan_options = '%7B%7D' #{}
 template_type = 'line'
 
 # dict of country acronyms and its IDs
-country_acr = {'nl': 1, 'de': 2, 'ch': 3, 'ie': 4}
+country_acr = {'nl': 1, 'de': 2, 'ch': 3, 'ie': 4, 'pl':5, 'hu': 6, 'cz': 13}
 
 # settings for carbon server connectivity
 # CARBON_SERVER = '172.27.66.160'

@@ -56,6 +56,7 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
 
 
 for acr, country_id in settings.country_acr.items():
+    # prefix may be extended for other apps
     metrics_prefix = 'netflix.country.' + acr + '.metrological.'
 
     for metric_name, metric_property in settings.metric.items():
@@ -69,6 +70,9 @@ for acr, country_id in settings.country_acr.items():
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, acr,
                                              settings.timespan[0], settings.timespan_options, settings.template_type,
                                              settings.app_id, settings.token)
-            print(instance.application_call_api())
-            # send_data(instance.application_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
+
+            # get info just for Netflix, may be extended for other apps
+            print([block for block in instance.application_call_api() if block['name'] == 'Netflix'])
+
+            # send_data(block, acr, metrics_prefix, metric_property[1], metric_property[0])
 
