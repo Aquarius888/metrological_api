@@ -38,7 +38,7 @@ class Metro(object):
                 format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
                        self.template_type, self.app_id)
         response = requests.get(complete_url, headers={'X-Api-Token': self.token,
-                                                       'Authorization': 'Baerer ' + self.authorization})
+                                                       'Authorization': 'Bearer ' + self.authorization})
         return response.json()
 
     def application_call_api(self):
@@ -50,7 +50,7 @@ class Metro(object):
             '{0}/{1}/{2}?operator=liberty&country={3}&environment=wpe-production&timespan={4}'.\
                 format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan)
         response = requests.get(complete_url, headers={'X-Api-Token': self.token,
-                                                       'Authorization': 'Baerer ' + self.authorization})
+                                                       'Authorization': 'Bearer ' + self.authorization})
         return response.json()
 
     def get_allowed_apps_id(self):
@@ -60,8 +60,8 @@ class Metro(object):
         """
         complete_url = '{0}/{1}/{2}'.format(self.url_api, self.api_type, self.metric)
         response = requests.get(complete_url, headers={'X-Api-Token': self.token,
-                                                       'Authorization': 'Baerer ' + self.authorization})
-        response.headers
+                                                       'Authorization': 'Bearer ' + self.authorization})
+
         return response.json()
 
 
