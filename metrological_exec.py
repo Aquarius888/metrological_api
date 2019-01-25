@@ -55,7 +55,7 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
     pass
 
 
-instance = netflix_metrics.Metro(settings.url_api, 'widget', 'allowedApps', authorization=settings.authorization)
+instance = netflix_metrics.Metro(settings.url_api, 'widgets', 'allowedApps', authorization=settings.authorization)
 app_id_json = instance.get_allowed_apps_id()
 list_apps_id = [app_id_json['apps'][n]['id'] for n in range(len(app_id_json))]
 
@@ -74,6 +74,13 @@ for acr, country_id in settings.country_acr.items():
                 # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
 
         # elif metric_property == 'widget':
+        elif 'timestamp_lastweek':
+            instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
+                                             settings.timespan[3], settings.timespan_options, settings.template_type,
+                                             settings.app_id, settings.token, authorization=settings.authorization)
+            print(instance.widget_call_api())
+            # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
+
         else:
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
                                              settings.timespan[2], settings.timespan_options, settings.template_type,
