@@ -55,7 +55,7 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
     pass
 
 
-instance = netflix_metrics.Metro(settings.url_api, 'widgets', 'allowedApps', authorization=settings.authorization)
+instance = netflix_metrics.Metro(settings.url_api, 'widgets', 'allowedApps', token=settings.token)
 app_id_json = instance.get_allowed_apps_id()
 list_apps_id = [app_id_json['apps'][n]['id'] for n in range(len(app_id_json))]
 
@@ -69,7 +69,7 @@ for acr, country_id in settings.country_acr.items():
                 instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
                                                  settings.timespan[2], settings.timespan_options,
                                                  settings.template_type,
-                                                 app_id, settings.token, authorization=settings.authorization)
+                                                 app_id, settings.token)
                 print(instance.widget_call_api())
                 # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
 
@@ -77,21 +77,21 @@ for acr, country_id in settings.country_acr.items():
         elif 'timestamp_lastweek':
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
                                              settings.timespan[3], settings.timespan_options, settings.template_type,
-                                             settings.app_id, settings.token, authorization=settings.authorization)
+                                             settings.app_id, settings.token)
             print(instance.widget_call_api())
             # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
 
         else:
             instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, country_id,
                                              settings.timespan[2], settings.timespan_options, settings.template_type,
-                                             settings.app_id, settings.token, authorization=settings.authorization)
+                                             settings.app_id, settings.token)
             print(instance.widget_call_api())
             # send_data(instance.widget_call_api(), acr, metrics_prefix, metric_property[1], metric_property[0])
 
         # elif metric_property[0] == 'applications':
         #     instance = netflix_metrics.Metro(settings.url_api, metric_property[0], metric_name, acr,
         #                                      settings.timespan[0], settings.timespan_options, settings.template_type,
-        #                                      settings.app_id, settings.token, authorization=settings.authorization)
+        #                                      settings.app_id, settings.token)
         #
         #     # get info just for Netflix, may be extended for other apps
         #     print([block for block in instance.application_call_api() if block['name'] == 'Netflix'])
