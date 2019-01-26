@@ -4,8 +4,6 @@ url_api = 'https://api.metrological.com/api/clientCountry'
 # Current token (was taken form dashboard https://sso.metrological.com/#/login)
 token = '0c17b77af4c2a23165901a5110b1cd6989f7169a6155565bd9ecad53b8df06a7'
 
-authorization = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6NTY4LCJ1c2VybmFtZSI6IkNOTUMtQUR2YW5jZWRTdXBwb3J0RFRWJ' \
-                'klTIiwiZXhwaXJlcyI6IjIwMTktMDEtMjVUMDY6MDk6MzYuNDE3WiJ9.DDuCTcKgYzHN0kSa-NkVJ6IHacCObzZU1HUMsNaxXTI'
 
 # Dictionary of metrics and its properties
 metric = {'most_apps_openend_on_channel': ['widget', 'AppsOpenedOnChannel'],
