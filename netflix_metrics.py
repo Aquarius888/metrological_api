@@ -10,7 +10,7 @@ class Metro(object):
         :param url_api: from settings.py
         :param api_type: key of metric dict from settings.py
         :param metric: name of metric - first value in list of properties of metric dict from settings.py
-        :param country_id: country id, matches are in metrological_exec.py
+        :param country_id: country id, matches are in exec files
         :param timespan: list of strings timespan format
         :param timespan_options: encoded char {}
         :param template_type: string
@@ -50,8 +50,8 @@ class Metro(object):
         response = requests.get(complete_url, headers={'X-Api-Token': self.token})
         return response.json()
 
-    def get_allowed_apps_id(self):
-        """Make a request, extract a list ID of allowed applications
+    def get_allowed(self):
+        """Make a request, extract a list of allowed applications or widgets
 
         :return: response in json
         """
