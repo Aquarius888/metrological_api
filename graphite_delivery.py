@@ -24,7 +24,7 @@ current_timestamp = int(time.time())
 
 def configure_logging():
     logger = logging.getLogger(__name__)
-    logger.level = 1
+    # logger.level = 1 ## uncomment it for switch on DEBUG mode
     format_str = '%(asctime)s - %(levelname)s - %(message)s'
     formatter = logging.Formatter(fmt=format_str)
 
@@ -37,13 +37,18 @@ def configure_logging():
     return logger
 
 
-def send_data(data, country_acr, prefix, message_postfix, api_type):
-    """Send received data to carbon
+# catch an exception for grequests
+def exception_handler(request, exception):
+    configure_logging.warninig("Request failed", request.url)
+    configure_logging.warninig(str(exception))
 
+
+def send_data(data, api_type, country_acr, metric_name, applid=''):
+    """Send received data to carbon
     :param data: response of Metrological API in json
     :param country_acr: country acronym
-    :param prefix: message prefix
-    :param message_postfix: message postfix
+    :param metric_name: name of metric for graphite
+    :param applid: name of application
     :param api_type: type of api (section)
     :return: pass
     """
@@ -51,9 +56,9 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
         categories = data["data"][country_acr]["categories"]
         data_type = data["data"][country_acr]["data"]
 
-        for i in range(0, len(categories)):
+        for i in xrange(len(categories)):
             tmp = categories[i] / 1000 + settings.TIME_SHIFT
-            message = prefix + message_postfix
+            message = 'metrological.country.{0}.{1}.{2}'.format(country_acr, metric_name, applid)
             configure_logging().info((message, data_type[i], datetime.datetime.fromtimestamp(tmp).isoformat()))
             graphitesend.send(
                 metric=message,
@@ -63,11 +68,10 @@ def send_data(data, country_acr, prefix, message_postfix, api_type):
     else:
         avg = data["avg"]
 
-        message = prefix + message_postfix
+        message = 'metrological.country.{0}.{1}.{2}'.format(country_acr, metric_name, applid)
         configure_logging().info((message, avg, datetime.datetime.fromtimestamp(current_timestamp).isoformat()))
         graphitesend.send(
             metric=message,
             value=avg,
             timestamp=current_timestamp,
             )
-

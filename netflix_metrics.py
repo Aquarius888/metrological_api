@@ -1,4 +1,5 @@
 import requests
+import grequests
 
 
 class Metro(object):
@@ -6,7 +7,6 @@ class Metro(object):
     def __init__(self, url_api='', api_type='', metric='', country_id='', timespan='',
                  timespan_options='', template_type='', app_id='', token=''):
         """
-
         :param url_api: from settings.py
         :param api_type: key of metric dict from settings.py
         :param metric: name of metric - first value in list of properties of metric dict from settings.py
@@ -29,7 +29,6 @@ class Metro(object):
 
     def widget_call_api(self):
         """Make a request, widget metric.
-
         :return: response in json
         """
         complete_url = \
@@ -41,7 +40,6 @@ class Metro(object):
 
     def application_call_api(self):
         """Make a request, application section.
-
         :return: response in json
         """
         complete_url = \
@@ -52,13 +50,33 @@ class Metro(object):
 
     def get_allowed(self):
         """Make a request, extract a list of allowed applications or widgets
-
         :return: response in json
         """
         complete_url = '{0}/{1}/{2}'.format(self.url_api, self.api_type, self.metric)
         response = requests.get(complete_url, headers={'X-Api-Token': self.token})
-
         return response.json()
 
+    def get_list_of_url(self):
+        """Collect list of URLs
+        :return: list of URLs
+        """
+        complete_url = \
+            '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'. \
+                format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options, self.template_type, self.app_id)
+        return complete_url
 
 
+# get list of responses asynchronously
+def get_response_list(token, list_of_urls, timeout=15, size=4, exception_handler=''):
+    response_list = (grequests.get(url, headers={'X-Api-Token': token}, timeout=timeout) for url in list_of_urls)
+    return grequests.imap(response_list, size=size, exception_handler=exception_handler)
+
+
+# get acronym, widget name, complited app id for sending to graphite
+def get_message(url, country_acr):
+    lst = [i.split('=')[1] for i in url.split('?')[1].split('&')]
+    acronym = [acr for acr, id in country_acr.items() if id == int(lst[0])][0]
+    widget = url.split('?')[0].split('/')[-1]
+    app_id = lst[-1].split('.')
+    return acronym, ''.join([part.capitalize() for part in widget.split('_')]),\
+           ''.join([part.capitalize() for part in app_id[1:]])
