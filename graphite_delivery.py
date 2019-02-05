@@ -52,7 +52,13 @@ def send_data(data, api_type, country_acr, metric_name, applid=''):
     :param api_type: type of api (section)
     :return: pass
     """
-    if api_type == 'widget':
+    # if api_type == 'widget':
+
+    if 'categories' not in data["data"][country_acr]:
+        pass
+    elif type(data["data"][country_acr]["categories"][0]) is not 'int':
+        pass
+    else:  # 'categories' are exist and it is numbers
         categories = data["data"][country_acr]["categories"]
         data_type = data["data"][country_acr]["data"]
 
@@ -65,13 +71,14 @@ def send_data(data, api_type, country_acr, metric_name, applid=''):
                 value=data_type[i],
                 timestamp=tmp,
             )
-    else:
-        avg = data["avg"]
+    # else:
+    #     avg = data["avg"]
+    #
+    #     message = 'metrological.country.{0}.{1}.{2}'.format(country_acr, metric_name, applid)
+    #     configure_logging().info((message, avg, datetime.datetime.fromtimestamp(current_timestamp).isoformat()))
+    #     graphitesend.send(
+    #         metric=message,
+    #         value=avg,
+    #         timestamp=current_timestamp,
+    #         )
 
-        message = 'metrological.country.{0}.{1}.{2}'.format(country_acr, metric_name, applid)
-        configure_logging().info((message, avg, datetime.datetime.fromtimestamp(current_timestamp).isoformat()))
-        graphitesend.send(
-            metric=message,
-            value=avg,
-            timestamp=current_timestamp,
-            )
