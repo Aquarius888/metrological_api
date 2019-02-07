@@ -185,3 +185,7 @@ if __name__ == "__main__":
     list_of_urls = get_list_of_urls()
     send_data(list_of_urls)
     configure_logging().info('FINISH WEEKLY.........')
+
+# TODO: API provides possibility to specify some country_id in one request
+# example: https://api.metrological.com/api/clientCountry/widget/household_engagement?clientCountryId=1&clientCountryId=5&timespan=lastweek
+# seems like, that it is possible use in script
