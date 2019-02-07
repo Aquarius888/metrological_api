@@ -5,7 +5,7 @@ import grequests
 class Metro(object):
 
     def __init__(self, url_api='', api_type='', metric='', country_id='', timespan='',
-                 timespan_options='', template_type='', app_id='', token=''):
+                 timespan_options='', template_type='', token='', proxies='', app_id=''):
         """
         :param url_api: from settings.py
         :param api_type: key of metric dict from settings.py
@@ -23,6 +23,7 @@ class Metro(object):
         self.api_type = api_type
         self.metric = metric
         self.app_id = app_id
+        self.proxies = proxies
         self.timespan = timespan
         self.timespan_options = timespan_options
         self.template_type = template_type
@@ -34,8 +35,8 @@ class Metro(object):
         complete_url = \
             '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'.\
                 format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
-                       self.template_type, self.app_id)
-        response = requests.get(complete_url, headers={'X-Api-Token': self.token})
+                       self.template_type, self.proxies, self.app_id)
+        response = requests.get(complete_url, headers={'X-Api-Token': self.token}, proxies=self.proxies)
         return response.json()
 
     def application_call_api(self):
@@ -45,7 +46,7 @@ class Metro(object):
         complete_url = \
             '{0}/{1}/{2}?operator=liberty&country={3}&environment=wpe-production&timespan={4}'.\
                 format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan)
-        response = requests.get(complete_url, headers={'X-Api-Token': self.token})
+        response = requests.get(complete_url, headers={'X-Api-Token': self.token}, proxies=self.proxies)
         return response.json()
 
     def get_allowed(self):
@@ -53,26 +54,30 @@ class Metro(object):
         :return: response in json
         """
         complete_url = '{0}/{1}/{2}'.format(self.url_api, self.api_type, self.metric)
-        response = requests.get(complete_url, headers={'X-Api-Token': self.token})
+        response = requests.get(complete_url, headers={'X-Api-Token': self.token}, proxies=self.proxies)
         return response.json()
 
     def get_list_of_url(self):
-        """Collect list of URLs
-        :return: list of URLs
-        """
         complete_url = \
             '{0}/{1}/{2}?clientCountryId={3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'. \
-                format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options, self.template_type, self.app_id)
+                format(self.url_api, self.api_type, self.metric, self.country_id, self.timespan, self.timespan_options,
+                       self.template_type, self.app_id)
         return complete_url
 
 
-# get list of responses asynchronously
-def get_response_list(token, list_of_urls, timeout=15, size=4, exception_handler=''):
-    response_list = (grequests.get(url, headers={'X-Api-Token': token}, timeout=timeout) for url in list_of_urls)
+# catch an exception
+def exception_handler(request, exception):
+    print("Request failed", request.url)
+    print(str(exception))
+
+
+def get_response_list(token, proxies, list_of_urls, timeout=5, size=16, exception_handler=''):
+    response_list = (grequests.get(url, headers={'X-Api-Token': token}, proxies=proxies, timeout=timeout)
+                     for url in list_of_urls)
     return grequests.imap(response_list, size=size, exception_handler=exception_handler)
 
 
-# get acronym, widget name, complited app id for sending to graphite
+# get acronym, widget name, complited app id from url
 def get_message(url, country_acr):
     lst = [i.split('=')[1] for i in url.split('?')[1].split('&')]
     acronym = [acr for acr, id in country_acr.items() if id == int(lst[0])][0]
