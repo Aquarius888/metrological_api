@@ -1,5 +1,9 @@
+import os
 import requests
 import grequests
+
+import logging
+from logging.handlers import RotatingFileHandler
 
 
 class Metro(object):
@@ -85,3 +89,21 @@ def get_message(url, country_acr):
     app_id = lst[-1].split('.')
     return acronym, ''.join([part.capitalize() for part in widget.split('_')]),\
            ''.join([part.capitalize() for part in app_id[1:]])
+
+
+# logger
+def configure_logging(loglevel):
+    logger = logging.getLogger(__name__)
+    level = getattr(logging, loglevel)
+    logger.setLevel(level)
+    format_str = '%(asctime)s - %(levelname)s - %(message)s'
+    formatter = logging.Formatter(fmt=format_str)
+
+    script_name = os.path.basename(__file__).split(".")[0]
+    log_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '{0}.log'.format(script_name))
+    rotating_hndlr = RotatingFileHandler(filename=log_path, maxBytes=5*1024*1024, backupCount=2)
+    rotating_hndlr.setFormatter(formatter)
+    logger.addHandler(rotating_hndlr)
+
+    return logger
+

@@ -24,7 +24,7 @@ def configure_logging():
     return logger
 
 
-url = 'https://api.metrological.com/api/clientCountry/widgets/widgets-i-can-create'
+url = 'http://api-metrological/api/clientCountry/widgets/widgets-i-can-create'
 response = requests.get(url, headers={'X-Api-Token': settings.token})
 #print(response.reason, response.raw, response.url, response.headers)
 response_json = response.json()
