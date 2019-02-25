@@ -10,17 +10,20 @@ class Metro:
         self.session.proxies = proxies
 
     def get_allowed(self, api_type, metric):
+        # Return list of allowed applications
         compose_url = '{0}/{1}/{2}'.format(self.url_api, api_type, metric)
         r = self.session.get(compose_url)
         return r.json()
 
     @staticmethod
     def get_country_str(country_dict):
+        # Convert dict country acr:id to str
         country_list = ['clientCountryId={}'.format(country_id) for acr, country_id in country_dict.items()]
         return '&'.join(country_list)
 
     @staticmethod
     def get_metric_list(w_json, timespan):
+        # Return 2 lists: daily (or weekly) metrics and for each application
         daily_metrics, weekly_metrics, app_list_req, weekly_app_list_req = [], [], [], []
         widg = w_json['widgets']
         lasthour = 'last60mins'
@@ -46,6 +49,7 @@ class Metro:
             return weekly_metrics, weekly_app_list_req
 
     def get_url(self, api_type, metric, country_id, timespan, timespan_options, template_type, app_id):
+        # Compose url
         complete_url = \
             '{0}/{1}/{2}?{3}&timespan={4}&timespanOptions={5}&templateType={6}&appId={7}'. \
                 format(self.url_api, api_type, metric, country_id, timespan, timespan_options, template_type, app_id)
@@ -53,6 +57,7 @@ class Metro:
         return complete_url
 
     def get_response(self, url):
+        # Just get request
         response = self.session.get(url)
         return response
 
@@ -60,8 +65,8 @@ class Metro:
     def get_message(url):
         """
         Parse url, extract and prepare widget name and application name
-        :param url:
-        :return: prepared widget name, appropriated application name
+        :param url: url for request
+        :return: prepared widget name and appropriated application name
         """
         lst = [i.split('=')[1] for i in url.split('?')[1].split('&')]
         widget = url.split('?')[0].split('/')[-1]

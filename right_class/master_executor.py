@@ -1,5 +1,5 @@
 import time
-# import graphitesend
+import graphitesend
 
 import settings
 import metrogenerator
@@ -7,14 +7,14 @@ import metrogenerator
 ###########################
 current_timestamp = int(time.time())
 
-# graphitesend.init(
-#    init_type='plaintext_tcp',
-#    graphite_server=settings.CARBON_SERVER,
-#    graphite_port=settings.CARBON_PORT,
-#    prefix=settings.CARBON_PREFIX,
-#    suffix=settings.CARBON_SUFFIX,
-#    system_name=settings.CARBON_SYSTEM,
-# )
+graphitesend.init(
+   init_type='plaintext_tcp',
+   graphite_server=settings.CARBON_SERVER,
+   graphite_port=settings.CARBON_PORT,
+   prefix=settings.CARBON_PREFIX,
+   suffix=settings.CARBON_SUFFIX,
+   system_name=settings.CARBON_SYSTEM,
+)
 
 ###########################
 
@@ -77,12 +77,12 @@ for url in urls:
 
                     print(message, data, tmp)
 
-                    # if data:
-                        # graphitesend.send(
-                        #    metric=message,
-                        #    value=data,
-                        #    timestamp=tmp,
-                        # )
+                    if data:
+                        graphitesend.send(
+                           metric=message,
+                           value=data,
+                           timestamp=tmp,
+                        )
 
         execution += 1
 
