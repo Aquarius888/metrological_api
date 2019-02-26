@@ -1,5 +1,5 @@
 """
-Metrological API metrics ingestion
+Metrological API metrics ingestion (weekly metrics)
 Graphite delivery
 
 ## Deploy notes
@@ -9,7 +9,6 @@ and make sure following variables are set:
 
  * metrological_token: token for Metrological API (may be taken from keeweb)
  * metrological_url_api: actual url of API or responsible alias
- * metrological_proxy: dict {IP:PORT} of proxy server for accessing to Metrological API
  * metrological_thread: amount of request's threads (must be equal 'N', str #194)
 
  If the DAG is going to be executed on Airflow under python3, change all xrange to range
@@ -28,15 +27,7 @@ from utils.graphite import Graphite
 
 token = str(Variable.get('metrological_token'))
 url_api = str(Variable.get('metrological_url_api'))
-proxy = str(Variable.get('metrological_proxy'))
 thread = str(Variable.get('metrological_thread'))
-
-# url_api = 'http://api-metrological/api/clientCountry'
-# proxy = {}
-
-# !!! local configuration
-# url_api = 'https://api.metrological.com/api/clientCountry'
-# proxy = {"https": "socks5://127.0.0.1:8888"}
 
 GLOBAL_GRAPHITE_PREFIX = 'app.metrological'
 # To compensate time shift between response from metrologic (UTC) and local server time (UTC+1(winter),+2(summer))
@@ -45,6 +36,7 @@ TIME_SHIFT = 7200
 headers = {'X-Api-Token': token}
 country_acr = {'nl': 1, 'de': 2, 'ch': 3, 'ie': 4, 'pl': 5, 'hu': 6, 'cz': 13}
 api_type = ('widget', 'widgets', 'applications')
+proxy = {}
 timespan = ('last60mins', 'lastweek')
 timespan_options = '%7B%7D'
 template_type = 'line'
@@ -79,11 +71,11 @@ def collect_urls(**context):
     non_req = list(set(daily_metrics) - set(app_list_req))
 
     urls = [m.get_url(api_type[0], metric_name, m.get_country_str(country_acr),
-                      timespan[0], timespan_options, template_type, app_id='')
+                      timespan[1], timespan_options, template_type, app_id='')
             for metric_name in non_req]
 
     urls_app = [m.get_url(api_type[0], metric_name, m.get_country_str(country_acr),
-                          timespan[0], timespan_options, template_type, app_id)
+                          timespan[1], timespan_options, template_type, app_id)
                 for metric_name in app_list_req for app_id in list_apps_id]
     urls.extend(urls_app)
     return urls
@@ -184,7 +176,7 @@ task_collect_urls = PythonOperator(
 task_break_list = PythonOperator(
     task_id='break_list',
     python_callable=break_list,
-    dag=dag,    
+    dag=dag,
     provide_context=True,
     params={
             'thread': thread,
