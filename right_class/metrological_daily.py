@@ -187,7 +187,7 @@ task_break_list = PythonOperator(
 task_collect_urls >> task_break_list
 
 # xrange(N), N must be equal thread
-for i in xrange(10):
+for i in xrange(5):
     task_get_n_publish = PythonOperator(
         task_id='get_n_publish' + str(i),
         python_callable=get_n_publish,
