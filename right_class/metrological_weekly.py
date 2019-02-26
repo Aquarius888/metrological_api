@@ -21,13 +21,13 @@ from airflow.models import Variable
 import time
 from datetime import datetime, timedelta
 
-from utils.metrogenerator import metrogenerator
+from utils import metrogenerator
 from utils.graphite import Graphite
 
 
 token = str(Variable.get('metrological_token'))
 url_api = str(Variable.get('metrological_url_api'))
-thread = str(Variable.get('metrological_thread'))
+thread = int(Variable.get('metrological_thread'))
 
 GLOBAL_GRAPHITE_PREFIX = 'app.metrological'
 # To compensate time shift between response from metrologic (UTC) and local server time (UTC+1(winter),+2(summer))
@@ -148,7 +148,7 @@ def get_n_publish(**context):
 # DAG
 ##################################################################################################################
 dag = DAG(
-    dag_id='metrological_metrics',
+    dag_id='metrological_metrics_weekly',
     schedule_interval=timedelta(days=7),
     dagrun_timeout=timedelta(minutes=5),
     max_active_runs=1,
