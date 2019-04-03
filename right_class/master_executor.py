@@ -73,7 +73,7 @@ for url in urls:
                         message = '{0}.{1}.{2}.{3}'.format(settings.prefix, acr, m_name, app_name)
 
                     else:
-                        message = '{0}.{1}.{2}.{3}'.format(settings.prefix, acr, m_name, unpack['categories'][index])
+                        message = '{0}.{1}.{2}.{3}'.format(settings.prefix, acr, m_name, app_name, unpack['categories'][index])
 
                     print(message, data, tmp)
 

@@ -66,9 +66,9 @@ def collect_urls(**context):
                     and 'example' not in app_id_json['apps'][n]['id'].lower()]
 
     widgets_json = m.get_allowed(api_type[1], 'widgets-i-can-create')
-    daily_metrics, app_list_req = m.get_metric_list(widgets_json, timespan[0])
+    metrics, app_list_req = m.get_metric_list(widgets_json, timespan[0])
 
-    non_req = list(set(daily_metrics) - set(app_list_req))
+    non_req = list(set(metrics) - set(app_list_req))
 
     urls = [m.get_url(api_type[0], metric_name, m.get_country_str(country_acr),
                       timespan[0], timespan_options, template_type, app_id='')

@@ -4,7 +4,6 @@ monkey.patch_ssl()
 
 import time
 # import graphitesend
-import datetime
 
 # extend ulimit opened files
 import resource
